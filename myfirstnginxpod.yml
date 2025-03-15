@@ -11,4 +11,3 @@ spec:
    image: websurf500/mynginx
    ports:
    - containerPort: 80
-   ...
