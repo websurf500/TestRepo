@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-application
+  namespace: argocd  # This assumes ArgoCD is installed in the argocd namespace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/websurf500/TestRepo.git  # Replace with your Git repo URL
+    targetRevision: main
+    path: .  # Assumes the deployment and service YAMLs are in the root of the repo
+  destination:
+    server: https://kubernetes.default.svc  # Default in-cluster Kubernetes API
+    namespace: default  # Target namespace for deployment
+  syncPolicy:
+    automated:  # Enables auto-sync
+      prune: true  # Deletes resources that are no longer in git
+      selfHeal: true  # Auto-corrects cluster state to match git
+    syncOptions:
+    - CreateNamespace=true  # Creates the namespace if it doesn't exist
